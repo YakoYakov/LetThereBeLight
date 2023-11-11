@@ -1,3 +1,4 @@
+using LetThereBeLight.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LetThereBeLightApi.Controllers
@@ -12,15 +13,20 @@ namespace LetThereBeLightApi.Controllers
     };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly INetworkService _networkService;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(
+            ILogger<WeatherForecastController> logger,
+            INetworkService networkService)
         {
             _logger = logger;
+            _networkService = networkService;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        public async Task<IEnumerable<WeatherForecast>> Get()
         {
+            var a = await _networkService.DiscoverDevicesAsync();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
