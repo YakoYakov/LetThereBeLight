@@ -34,7 +34,7 @@ namespace LetThereBeLight.Services
 
                 while (true)
                 {
-                    var send = await socket.SendAsync(buffer.AsMemory(), remoteEndPoint);
+                    var send = await socket.Send(buffer.AsMemory(), remoteEndPoint);
                     await Task.Delay(50);
 
                     try
