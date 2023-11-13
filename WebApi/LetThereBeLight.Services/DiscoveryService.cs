@@ -13,7 +13,7 @@ namespace LetThereBeLight.Services
         private const string multiCastAddress = "239.255.255.250"; //YeeLight multicast address
         private const int SSDP_port = 1982; //YeeLight SSDP port
         private const int SSDP_timeOut = 10000; //Default time in microseconds to wait for SSDP packet
-
+        public List<ISmartBulb> Devices { get; set; } = new List<ISmartBulb>();
         /// <summary>
         /// Discovers light devices by using SSDP protocol
         /// </summary>
@@ -100,8 +100,8 @@ namespace LetThereBeLight.Services
 
                 }
             }
-
-            return devices.Select(n => n.Value).ToList();
+            Devices = devices.Select(n => n.Value).ToList();
+            return Devices;
         }
 
         private static bool IsNicGoodForMulticast(NetworkInterface adapter)
