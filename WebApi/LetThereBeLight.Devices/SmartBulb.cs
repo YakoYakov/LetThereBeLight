@@ -9,8 +9,7 @@ namespace LetThereBeLight.Devices
 {
     public class SmartBulb : ISmartBulb
     {
-        //Dictionary holds device properties. Can be accessed with an indexer
-        private Dictionary<DeviceProperty, dynamic> DeviceValues = new Dictionary<DeviceProperty, dynamic>();
+        public DeviceProperties DeviceProperties { get; set; } = new DeviceProperties();
         public event Action<DeviceProperty>? onPropertyChanged;
 
         public static SmartBulb Initialize(string data)
@@ -23,18 +22,52 @@ namespace LetThereBeLight.Devices
         //Parses values from udp response and fills dictionary
         public void GetProperties(string data)
         {
-            string[] set = data.Trim('\n').Split('\r');
+            string[] set = data.Trim('\n').Split('\r', StringSplitOptions.RemoveEmptyEntries);
             var propArray = (int[])Enum.GetValues(typeof(DeviceProperty));
             foreach (var i in propArray)
             {
                 string val = parseValue(set[i]);
                 try
                 {
-                    DeviceValues.Add((DeviceProperty)i, int.Parse(val));
+                    switch ((DeviceProperty)i)
+                    {
+                        case DeviceProperty.Location:
+                            DeviceProperties.Location = val;
+                            break;
+                        case DeviceProperty.Id:
+                            DeviceProperties.Id = Convert.ToInt32(val, 16);
+                            break;
+                        case DeviceProperty.Saturation:
+                            DeviceProperties.Saturation = int.Parse(val);
+                            break;
+                        case DeviceProperty.RGB:
+                            DeviceProperties.RGB = int.Parse(val);
+                            break;
+                        case DeviceProperty.Power:
+                            DeviceProperties.Power = val;
+                            break;
+                        case DeviceProperty.Hue:
+                            DeviceProperties.Hue = int.Parse(val);
+                            break;
+                        case DeviceProperty.ColorTemperature:
+                            DeviceProperties.ColorTemperature = int.Parse(val);
+                            break;
+                        case DeviceProperty.Brightness:
+                            DeviceProperties.Brightness = int.Parse(val);
+                            break;
+                        case DeviceProperty.ColorMode:
+                            DeviceProperties.ColorMode = int.Parse(val);
+                            break;
+                        case DeviceProperty.Name:
+                            DeviceProperties.Name = val;
+                            break;
+                        default:
+                            break;
+                    }
                 }
-                catch
+                catch (Exception ex)
                 {
-                    DeviceValues.Add((DeviceProperty)i, val);
+                    throw new ArgumentException($"Couldn`t process returned value {val} when initializing device properties", ex);
                 }
             }
         }
@@ -47,7 +80,7 @@ namespace LetThereBeLight.Devices
             string json = JsonSerializer.Serialize(obj) + "\r\n";
 
             //Full address of yeelight bulb
-            string location = (string)device[DeviceProperty.Location];
+            string location = device.DeviceProperties.Location;
 
             string ip = NetworkHelper.getAddress(location);
             int port = NetworkHelper.getPort(location);
@@ -73,9 +106,8 @@ namespace LetThereBeLight.Devices
                     client.Client.Receive(memory.Memory.Span);
 
                     client.Close();
-                    
+
                     string responseJSON = Encoding.ASCII.GetString(buffer);
-                    //var response = JsonSerializer.Deserialize<dynamic>(memory.Memory.Span.Trim());
                     return responseJSON.Contains("ok");
                 }
                 else
@@ -92,29 +124,6 @@ namespace LetThereBeLight.Devices
 
         }
 
-        //Indexer for Dictionary
-        public dynamic this[DeviceProperty dp]
-        {
-            get
-            {
-                if (this.DeviceValues.ContainsKey(dp))
-                {
-                    return this.DeviceValues[dp];
-                }
-
-                return string.Empty;
-            }
-
-            set
-            {
-                if (this.DeviceValues.ContainsKey(dp))
-                {
-                    this.DeviceValues[dp] = value;
-
-                    onPropertyChanged?.Invoke(dp);
-                }
-            }
-        }
         private string parseValue(string raw)
         {
             int startPos = raw.IndexOf(':') + 1;
