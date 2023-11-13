@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LetThereBeLight.Services", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LetThereBeLight.Devices", "..\LetThereBeLight.Devices\LetThereBeLight.Devices.csproj", "{1AD55D2C-9C3E-4CD3-9AB0-9795E377ACFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetThereBeLight.Tests", "..\LetThereBeLight.Tests\LetThereBeLight.Tests.csproj", "{1A28BDFC-EC04-405B-A907-75A262E75CD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LetThereBeLight.Tests", "..\LetThereBeLight.Tests\LetThereBeLight.Tests.csproj", "{1A28BDFC-EC04-405B-A907-75A262E75CD6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
