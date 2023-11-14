@@ -34,9 +34,9 @@ namespace LetThereBeLightApi.Controllers
             if (bulb != null)
             {
                 //bulb.SendCommand(bulb, 530714617, "set_power", new dynamic[] { "off", "smooth", 500 });
-                bulb.SendCommand(bulb, 530714617, "set_power", new dynamic[] { "on", "smooth", 500 });
+                //bulb.SendCommand(bulb, 530714617, "set_power", new dynamic[] { "on", "smooth", 500 });
                 //222, 235, 52
-                int rgb = (251 * 65536) + (252 * 256) + 199;
+                //int rgb = (251 * 65536) + (252 * 256) + 199;
                 //int brightness = Math.Max(1, Math.Min(100, Math.Abs(5)));
                 //bulb.SendCommand(bulb, 530714617, "set_bright", new dynamic[] { rgb, "smooth", 500 });
                 //bulb.SendCommand(bulb, 530714617, "set_rgb", new dynamic[] { rgb, "smooth", 1000 });

@@ -1,7 +1,10 @@
-﻿namespace LetThereBeLight.Devices
+﻿using LetThereBeLight.Devices.Enums;
+
+namespace LetThereBeLight.Devices
 {
     public interface ISmartBulb
     {
-        bool SendCommand(SmartBulb device, int id, string method, dynamic[] parameters);
+        DeviceProperties DeviceProperties { get; }
+        event Action<DeviceProperty>? onPropertyChanged;
     }
 }

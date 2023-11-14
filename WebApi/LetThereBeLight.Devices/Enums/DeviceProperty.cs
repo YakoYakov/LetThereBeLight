@@ -2,16 +2,17 @@
 {
     public enum DeviceProperty
     {
-        Location = 0,
-        Id = 1,
-        Power = 2,
-        Brightness = 3,
-        ColorMode = 4,
-        ColorTemperature = 5,
-        RGB = 6,
-        Hue = 7,
-        Saturation = 8,
-        Name = 9
+        // Enums are numbered as the index they have after parsing the result
+        Location = 4,
+        Id = 6,
+        Power = 10,
+        Brightness = 11,
+        ColorMode = 12,
+        ColorTemperature = 13,
+        RGB = 14,
+        Hue = 15,
+        Saturation = 16,
+        Name = 17
     }
 
 }

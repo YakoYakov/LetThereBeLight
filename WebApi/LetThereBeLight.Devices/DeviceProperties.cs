@@ -1,10 +1,12 @@
-﻿namespace LetThereBeLight.Devices
+﻿using LetThereBeLight.Devices.Enums;
+
+namespace LetThereBeLight.Devices
 {
     public class DeviceProperties
     {
         public int Id { get; set; }
         public string Location { get; set; } = string.Empty;
-        public string Power { get; set; } = "off";
+        public Power Power { get; set; } = Power.Off;
         public int Brightness { get; set; }
         public int ColorMode { get; set; }
         public int ColorTemperature { get; set; }
