@@ -26,7 +26,7 @@ namespace LetThereBeLight.Devices.extensions
 
             try
             {
-                TcpClient client = new TcpClient();
+                TcpClient client = new();
 
                 client.Connect(ip, port);
 

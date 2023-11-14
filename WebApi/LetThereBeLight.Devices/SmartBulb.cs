@@ -67,10 +67,10 @@ namespace LetThereBeLight.Devices
             }
         }
 
-        private string ParseValue(string raw)
+        private static string ParseValue(string raw)
         {
             int startPos = raw.IndexOf(':') + 1;
-            return raw.Substring(startPos).Trim();
+            return raw[startPos..].Trim();
         }
     }
 }

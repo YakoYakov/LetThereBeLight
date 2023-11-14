@@ -14,17 +14,17 @@ namespace LetThereBeLight.Services
         private const int SSDP_port = 1982; //YeeLight SSDP port
         private const int SSDP_timeOut = 10000; //Default time in microseconds to wait for SSDP packet
 
-        public List<ISmartBulb> Devices { get; set; } = new List<ISmartBulb>();
+        public List<SmartBulb> Devices { get; set; } = new List<SmartBulb>();
 
         
-        public List<ISmartBulb> DiscoverDevices(int SSDP_receiveTimeOut = SSDP_timeOut, int pingCount = 1, NetworkInterface? networkInterface = null)
+        public List<SmartBulb> DiscoverDevices(int SSDP_receiveTimeOut = SSDP_timeOut, int pingCount = 1, NetworkInterface? networkInterface = null)
         {
-            Dictionary<IPAddress, ISmartBulb> devices = new Dictionary<IPAddress, ISmartBulb>();
+            Dictionary<IPAddress, SmartBulb> devices = new();
 
-            using (UdpClient socket = new UdpClient())
+            using (UdpClient socket = new())
             {
                 IPAddress multicastAddress = IPAddress.Parse(multiCastAddress);
-                IPEndPoint multicastEndpoint = new IPEndPoint(multicastAddress, SSDP_port);
+                IPEndPoint multicastEndpoint = new(multicastAddress, SSDP_port);
 
                 bool isMulticastJoined = false;
 
@@ -100,7 +100,6 @@ namespace LetThereBeLight.Services
 
         private static bool IsNicGoodForMulticast(NetworkInterface adapter)
         {
-            IPInterfaceProperties ip_properties = adapter.GetIPProperties();
             if (!adapter.GetIPProperties().MulticastAddresses.Any())
                 return false; // most of VPN adapters will be skipped
             if (!adapter.SupportsMulticast)
@@ -141,7 +140,7 @@ namespace LetThereBeLight.Services
                     //Index getter shouldn't throw here because IsNicGoodForMulticast checks for that
                     int ifIndex = networkInterface.GetIPProperties().GetIPv4Properties().Index;
 
-                    MulticastOption multicastOptions = new MulticastOption(multicastEndpoint.Address, ifIndex);
+                    MulticastOption multicastOptions = new(multicastEndpoint.Address, ifIndex);
                     socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, multicastOptions);
 
                     // Set outgoing Multicast packet interface

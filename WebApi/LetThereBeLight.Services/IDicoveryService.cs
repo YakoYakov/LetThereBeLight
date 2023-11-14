@@ -6,7 +6,7 @@ namespace LetThereBeLight.Services
     public interface IDicoveryService
     {
         // In memory collection of Devices
-        List<ISmartBulb> Devices { get; }
+        List<SmartBulb> Devices { get; }
 
         /// <summary>
         /// Discovers light devices by using SSDP protocol
@@ -17,6 +17,6 @@ namespace LetThereBeLight.Services
         /// <returns>
         /// A List of <see cref="ISmartBulb"/> discovered devices.
         /// </returns>
-        List<ISmartBulb> DiscoverDevices(int SSDP_receiveTimeOut, int pingCount = 1, NetworkInterface? networkInterface = null);
+        List<SmartBulb> DiscoverDevices(int SSDP_receiveTimeOut, int pingCount = 1, NetworkInterface? networkInterface = null);
     }
 }

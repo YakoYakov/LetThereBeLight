@@ -29,7 +29,7 @@ namespace LetThereBeLightApi.Controllers
         public IEnumerable<WeatherForecast> Get()
         {
             var a = _networkService.DiscoverDevices(5000);
-            var bulb = a[0] as SmartBulb;
+            SmartBulb bulb = a[0];
 
             if (bulb != null)
             {
