@@ -5,7 +5,7 @@ namespace LetThereBeLight.Devices
     public class SmartBulb : ISmartBulb
     {
         public DeviceProperties DeviceProperties { get; set; } = new DeviceProperties();
-        public event Action<DeviceProperty>? onPropertyChanged;
+        public event Action<DeviceProperty>? OnPropertyChanged;
 
         public static SmartBulb Initialize(string data)
         {

@@ -5,6 +5,6 @@ namespace LetThereBeLight.Devices
     public interface ISmartBulb
     {
         DeviceProperties DeviceProperties { get; }
-        event Action<DeviceProperty>? onPropertyChanged;
+        event Action<DeviceProperty>? OnPropertyChanged;
     }
 }
