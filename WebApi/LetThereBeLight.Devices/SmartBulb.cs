@@ -1,4 +1,9 @@
 ﻿using LetThereBeLight.Devices.Enums;
+using LetThereBeLight.Services.Helpers;
+using System.Buffers;
+using System.Net.Sockets;
+using System.Text;
+using System.Text.Json;
 
 namespace LetThereBeLight.Devices
 {
@@ -10,12 +15,68 @@ namespace LetThereBeLight.Devices
         public static SmartBulb Initialize(string data)
         {
             SmartBulb device = new();
-            device.GetProperties(data);
+            device.SetProperties(data);
             return device;
         }
 
+        public bool SendCommand(CommandModel command)
+        {
+            var obj = new { id = DeviceProperties.Id, method = nameof(command.Method), @params = command.Params };
+
+            //Yeelight requires \r\n delimiters at the end of json data
+            string json = JsonSerializer.Serialize(obj) + "\r\n";
+
+            //Full address of yeelight bulb
+            string location = DeviceProperties.Location;
+
+            string ip = NetworkHelper.getAddress(location);
+            int port = NetworkHelper.getPort(location);
+
+            if (string.IsNullOrEmpty(ip) || port == 0)
+                return false;
+
+            try
+            {
+                TcpClient client = new();
+
+                client.Connect(ip, port);
+
+                if (client.Connected)
+                {
+                    //Send command
+                    byte[] buffer = Encoding.ASCII.GetBytes(json);
+                    client.Client.Send(buffer);
+
+                    //Receive response
+                    using IMemoryOwner<byte> memory = MemoryPool<byte>.Shared.Rent(1024 * 4);
+                    buffer = new byte[128];
+                    client.Client.Receive(memory.Memory.Span);
+
+                    client.Close();
+
+                    string responseJSON = Encoding.ASCII.GetString(buffer);
+                    return responseJSON.Contains("ok");
+                }
+                else
+                {
+                    client.Close();
+                    return false;
+                }
+            }
+            catch (SocketException)
+            {
+                return false;
+            }
+
+        }
+
+        public bool IsPoweredOn()
+        {
+            return DeviceProperties.Power == Power.On;
+        }
+
         //Parses values from udp response and set the DeviceProperties
-        public void GetProperties(string data)
+        private void SetProperties(string data)
         {
             string[] set = data.Trim('\n').Split('\r', StringSplitOptions.RemoveEmptyEntries);
             var propArray = (int[])Enum.GetValues(typeof(DeviceProperty));

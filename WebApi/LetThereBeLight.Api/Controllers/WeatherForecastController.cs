@@ -1,6 +1,6 @@
 using LetThereBeLight.Devices;
-using LetThereBeLight.Devices.Enums;
 using LetThereBeLight.Services;
+using LetThereBeLight.Services.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LetThereBeLightApi.Controllers
@@ -33,7 +33,15 @@ namespace LetThereBeLightApi.Controllers
 
             if (bulb != null)
             {
-                //bulb.SendCommand(bulb, 530714617, "set_power", new dynamic[] { "off", "smooth", 500 });
+                Thread.Sleep(2000);
+                bulb.ToggleOnOff();
+                Thread.Sleep(2000);
+                bulb.ToggleOnOff();
+                Thread.Sleep(2000);
+                bulb.ToggleOnOff();
+                Thread.Sleep(2000);
+                bulb.ToggleOnOff();
+                
                 //bulb.SendCommand(bulb, 530714617, "set_power", new dynamic[] { "on", "smooth", 500 });
                 //222, 235, 52
                 //int rgb = (251 * 65536) + (252 * 256) + 199;
