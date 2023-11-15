@@ -4,6 +4,7 @@ using System.Buffers;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace LetThereBeLight.Devices
 {
@@ -21,10 +22,13 @@ namespace LetThereBeLight.Devices
 
         public bool SendCommand(CommandModel command)
         {
-            var obj = new { id = DeviceProperties.Id, method = nameof(command.Method), @params = command.Params };
+            var obj = new { id = DeviceProperties.Id, method = command.Method, @params = command.Params };
+
+            var serializerOptions = new JsonSerializerOptions();
+            serializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
 
             //Yeelight requires \r\n delimiters at the end of json data
-            string json = JsonSerializer.Serialize(obj) + "\r\n";
+            string json = JsonSerializer.Serialize(obj, serializerOptions) + "\r\n";
 
             //Full address of yeelight bulb
             string location = DeviceProperties.Location;
