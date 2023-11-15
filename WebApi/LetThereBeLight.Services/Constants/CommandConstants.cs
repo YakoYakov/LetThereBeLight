@@ -8,6 +8,9 @@
         public const int MIN_RGB_VALUE = 0;
         public const int MAX_RGB_VALUE = 16777215;
 
+        public const int MIN_BRIGHTNESS = 1;
+        public const int MAX_BRIGHTNESS = 100;
+
         public const int DEFAULT_DURATION_MILISECONDS = 600;
     }
 }

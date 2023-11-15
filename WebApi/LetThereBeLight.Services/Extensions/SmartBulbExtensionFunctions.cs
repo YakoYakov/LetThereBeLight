@@ -45,8 +45,10 @@ namespace LetThereBeLight.Services.Extensions
             this SmartBulb smartBulb,
             int temperature,
             Effect effect = Effect.Smooth,
-            int duration = CommandConstants.DEFAULT_DURATION_MILISECONDS) 
+            int duration = CommandConstants.DEFAULT_DURATION_MILISECONDS)
         {
+            // Cannot make changes on device that is off
+            if (!smartBulb.IsPoweredOn()) { return smartBulb; }
             if (temperature < 1700) { temperature = 1700; }
             if (temperature > 6500) { temperature = 6500; }
 
@@ -56,9 +58,9 @@ namespace LetThereBeLight.Services.Extensions
                 Params = new List<object> { temperature, effect, duration }
             };
 
-            var isSuccesful = smartBulb.SendCommand(changeColorCommand); 
+            var isSuccesful = smartBulb.SendCommand(changeColorCommand);
 
-            if (isSuccesful) 
+            if (isSuccesful)
             {
                 smartBulb.DeviceProperties.ColorTemperature = temperature;
                 smartBulb.DeviceProperties.ColorMode = 2;
@@ -81,9 +83,11 @@ namespace LetThereBeLight.Services.Extensions
             int r,
             int g,
             int b,
-            Effect effect,
+            Effect effect = Effect.Smooth,
             int duration = CommandConstants.DEFAULT_DURATION_MILISECONDS)
         {
+            // Cannot make changes on device that is off
+            if (!smartBulb.IsPoweredOn()) { return smartBulb; }
             var sumRgb = GetSumRGB(r, g, b);
 
             var changeRGBCommand = new CommandModel
@@ -98,6 +102,33 @@ namespace LetThereBeLight.Services.Extensions
             {
                 smartBulb.DeviceProperties.RGB = sumRgb;
                 smartBulb.DeviceProperties.ColorMode = 1;
+            }
+
+            return smartBulb;
+        }
+
+        public static SmartBulb ChangeBrightness(
+            this SmartBulb smartBulb,
+            int brightness,
+            Effect effect = Effect.Smooth,
+            int duration = CommandConstants.DEFAULT_DURATION_MILISECONDS)
+        {
+            // Cannot make changes on device that is off
+            if (!smartBulb.IsPoweredOn()) { return smartBulb; }
+
+            if (brightness < CommandConstants.MIN_BRIGHTNESS) { brightness = CommandConstants.MIN_BRIGHTNESS; }
+            if (brightness > CommandConstants.MAX_BRIGHTNESS) { brightness = CommandConstants.MAX_BRIGHTNESS; }
+
+            var changeBrightnessCommand = new CommandModel
+            {
+                Method = Method.set_bright,
+                Params = new List<object> { brightness, effect, duration }
+            };
+
+            var isSuccesful = smartBulb.SendCommand(changeBrightnessCommand);
+            if (isSuccesful)
+            {
+                smartBulb.DeviceProperties.Brightness = brightness;
             }
 
             return smartBulb;
