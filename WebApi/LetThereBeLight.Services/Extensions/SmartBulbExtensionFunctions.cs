@@ -1,7 +1,6 @@
 ﻿using LetThereBeLight.Devices;
 using LetThereBeLight.Devices.Enums;
 using LetThereBeLight.Services.Constants;
-using System.Runtime.CompilerServices;
 
 namespace LetThereBeLight.Services.Extensions
 {
@@ -18,7 +17,8 @@ namespace LetThereBeLight.Services.Extensions
             Effect effect = Effect.Smooth,
             int duration = CommandConstants.DEFAULT_DURATION_MILISECONDS)
         {
-            var newState = smartBulb.IsPoweredOn() ? Power.Off : Power.On;
+            var newState = Power.Off;
+            if (smartBulb.DeviceProperties.Power == Power.Off) { newState = Power.On; }
 
             var command = new CommandModel
             {

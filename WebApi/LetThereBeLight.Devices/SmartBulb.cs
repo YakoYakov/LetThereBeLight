@@ -58,8 +58,9 @@ namespace LetThereBeLight.Devices
 
                     client.Close();
 
-                    string responseJSON = Encoding.ASCII.GetString(buffer);
-                    return responseJSON.Contains("ok");
+                    string responseJSON = Encoding.ASCII.GetString(memory.Memory.Span);
+
+                    return !responseJSON.Contains("error");
                 }
                 else
                 {
