@@ -1,6 +1,7 @@
 ﻿using LetThereBeLight.Devices;
 using LetThereBeLight.Devices.Enums;
 using LetThereBeLight.Services.Constants;
+using System.Runtime.CompilerServices;
 
 namespace LetThereBeLight.Services.Extensions
 {
