@@ -6,7 +6,7 @@ using System.Text;
 
 namespace LetThereBeLight.Services
 {
-    public class DiscoveryService : IDicoveryService
+    public class DiscoveryService : IDiscoveryService
     {
         // https://www.yeelight.com/download/Yeelight_Inter-Operation_Spec.pdf
         private const string SSDP_searchMessage = "M-SEARCH * HTTP/1.1\r\nMAN: \"ssdp:discover\"\r\nST: wifi_bulb\r\n"; //Yeelight SSDP search message

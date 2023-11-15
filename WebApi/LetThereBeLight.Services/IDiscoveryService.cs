@@ -3,7 +3,7 @@ using System.Net.NetworkInformation;
 
 namespace LetThereBeLight.Services
 {
-    public interface IDicoveryService
+    public interface IDiscoveryService
     {
         // In memory collection of Devices
         List<SmartBulb> Devices { get; }
