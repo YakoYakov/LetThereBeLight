@@ -25,7 +25,7 @@ namespace LetThereBeLight.Api.Controllers
         {
             var result = _discoveryService.DiscoverDevices(timeOut);
 
-            if (result.Count > 0)
+            if (result.Count == 0)
             {
                 return NotFound();
             }
@@ -34,14 +34,11 @@ namespace LetThereBeLight.Api.Controllers
         }
 
         [HttpPost("toggle")]
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CommandResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult ToggleOnOff(int smartBulbId)
         {
-            if (!_discoveryService.Devices.Any())
-            {
-                _discoveryService.DiscoverDevices(DEFAULT_DISCOVERY_TIME_OUT_MILISECONDS);
-            }
+            HasDeviceDiscoveryRun();
 
             var smartBulb = _discoveryService.Devices.FirstOrDefault(sb => sb.DeviceProperties.Id == smartBulbId);
 
@@ -51,14 +48,11 @@ namespace LetThereBeLight.Api.Controllers
         }
 
         [HttpPost("brightness")]
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CommandResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult ChangeBrightness(int smartBulbId, int brightness)
         {
-            if (!_discoveryService.Devices.Any())
-            {
-                _discoveryService.DiscoverDevices(DEFAULT_DISCOVERY_TIME_OUT_MILISECONDS);
-            }
+            HasDeviceDiscoveryRun();
 
             var smartBulb = _discoveryService.Devices.FirstOrDefault(sb => sb.DeviceProperties.Id == smartBulbId);
 
@@ -68,14 +62,11 @@ namespace LetThereBeLight.Api.Controllers
         }
 
         [HttpPost("color-temperature")]
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CommandResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult ChangeColorTemperature(int smartBulbId, int colorTemperature)
         {
-            if (!_discoveryService.Devices.Any())
-            {
-                _discoveryService.DiscoverDevices(DEFAULT_DISCOVERY_TIME_OUT_MILISECONDS);
-            }
+            HasDeviceDiscoveryRun();
 
             var smartBulb = _discoveryService.Devices.FirstOrDefault(sb => sb.DeviceProperties.Id == smartBulbId);
 
@@ -85,14 +76,11 @@ namespace LetThereBeLight.Api.Controllers
         }
 
         [HttpPost("rgb")]
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CommandResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult ChangeRGB(int smartBulbId, int r, int g, int b)
         {
-            if (!_discoveryService.Devices.Any())
-            {
-                _discoveryService.DiscoverDevices(DEFAULT_DISCOVERY_TIME_OUT_MILISECONDS);
-            }
+            HasDeviceDiscoveryRun();
 
             var smartBulb = _discoveryService.Devices.FirstOrDefault(sb => sb.DeviceProperties.Id == smartBulbId);
 
@@ -102,7 +90,7 @@ namespace LetThereBeLight.Api.Controllers
         }
 
         [HttpPost("name")]
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CommandResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult ChangeName(int smartBulbId, string name)
         {

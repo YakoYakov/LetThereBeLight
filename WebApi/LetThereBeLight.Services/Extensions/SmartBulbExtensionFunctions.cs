@@ -11,8 +11,8 @@ namespace LetThereBeLight.Services.Extensions
         /// </summary>
         /// <param name="effect">Shuld the transition be smooth or sudden (default is smooth)</param>
         /// <param name="duration">The duration of the change (applies only id the effect is smooth)</param>
-        /// <returns><see cref="SmartBulb"/></returns>
-        public static SmartBulb ToggleOnOff(
+        /// <returns>A <see cref="CommandResponse"/> if the response Success is false the Message will be populate</returns>
+        public static CommandResponse ToggleOnOff(
             this SmartBulb smartBulb,
             Effect effect = Effect.Smooth,
             int duration = CommandConstants.DEFAULT_DURATION_MILISECONDS)
@@ -31,7 +31,7 @@ namespace LetThereBeLight.Services.Extensions
                 smartBulb.DeviceProperties.Power = newState;
             }
 
-            return smartBulb;
+            return new CommandResponse { Success = isSuccesful, Message = isSuccesful ? "" : "Toggle Command Failed" };
         }
 
         /// <summary>
@@ -40,15 +40,18 @@ namespace LetThereBeLight.Services.Extensions
         /// <param name="temperature">The new color temperature (range is 1700 ~ 6500)</param>
         /// <param name="effect">Shuld the transition be smooth or sudden (default is smooth)</param>
         /// <param name="duration">The duration of the change (applies only id the effect is smooth)</param>
-        /// <returns><see cref="SmartBulb"/></returns>
-        public static SmartBulb ChangeColorTemperature(
+        /// <returns>A <see cref="CommandResponse"/> if the response Success is false the Message will be populate</returns>
+        public static CommandResponse ChangeColorTemperature(
             this SmartBulb smartBulb,
             int temperature,
             Effect effect = Effect.Smooth,
             int duration = CommandConstants.DEFAULT_DURATION_MILISECONDS)
         {
             // Cannot make changes on device that is off
-            if (!smartBulb.IsPoweredOn()) { return smartBulb; }
+            if (!smartBulb.IsPoweredOn()) 
+            {
+                return new CommandResponse { Success = false, Message = "Bulb is off, could not proccess command!" };
+            }
             if (temperature < 1700) { temperature = 1700; }
             if (temperature > 6500) { temperature = 6500; }
 
@@ -66,7 +69,7 @@ namespace LetThereBeLight.Services.Extensions
                 smartBulb.DeviceProperties.ColorMode = 2;
             }
 
-            return smartBulb;
+            return new CommandResponse { Success = isSuccesful, Message = isSuccesful ? "" : "Change Color Command Failed" };
         }
 
         /// <summary>
@@ -77,8 +80,8 @@ namespace LetThereBeLight.Services.Extensions
         /// <param name="b">blue color</param>
         /// <param name="effect">Shuld the transition be smooth or sudden (default is smooth)</param>
         /// <param name="duration">The duration of the change (applies only id the effect is smooth)</param>
-        /// <returns><see cref="SmartBulb"/></returns>
-        public static SmartBulb ChangeRGB(
+        /// <returns>A <see cref="CommandResponse"/> if the response Success is false the Message will be populate</returns>
+        public static CommandResponse ChangeRGB(
             this SmartBulb smartBulb,
             int r,
             int g,
@@ -87,7 +90,10 @@ namespace LetThereBeLight.Services.Extensions
             int duration = CommandConstants.DEFAULT_DURATION_MILISECONDS)
         {
             // Cannot make changes on device that is off
-            if (!smartBulb.IsPoweredOn()) { return smartBulb; }
+            if (!smartBulb.IsPoweredOn())
+            {
+                return new CommandResponse { Success = false, Message = "Bulb is off, could not proccess command!" };
+            }
             var sumRgb = GetSumRGB(r, g, b);
 
             var changeRGBCommand = new CommandModel
@@ -104,7 +110,7 @@ namespace LetThereBeLight.Services.Extensions
                 smartBulb.DeviceProperties.ColorMode = 1;
             }
 
-            return smartBulb;
+            return new CommandResponse { Success = isSuccesful, Message = isSuccesful ? "" : "Change RGB Command Failed" };
         }
 
         /// <summary>
@@ -113,15 +119,18 @@ namespace LetThereBeLight.Services.Extensions
         /// <param name="brightness">The new brightness</param>
         /// <param name="effect">Shuld the transition be smooth or sudden (default is smooth)</param>
         /// <param name="duration">The duration of the change (applies only id the effect is smooth)</param>
-        /// <returns><see cref="SmartBulb"/></returns>
-        public static SmartBulb ChangeBrightness(
+        /// <returns>A <see cref="CommandResponse"/> if the response Success is false the Message will be populate</returns>
+        public static CommandResponse ChangeBrightness(
             this SmartBulb smartBulb,
             int brightness,
             Effect effect = Effect.Smooth,
             int duration = CommandConstants.DEFAULT_DURATION_MILISECONDS)
         {
             // Cannot make changes on device that is off
-            if (!smartBulb.IsPoweredOn()) { return smartBulb; }
+            if (!smartBulb.IsPoweredOn())
+            {
+                return new CommandResponse { Success = false, Message = "Bulb is off, could not proccess command!" };
+            }
 
             if (brightness < CommandConstants.MIN_BRIGHTNESS) { brightness = CommandConstants.MIN_BRIGHTNESS; }
             if (brightness > CommandConstants.MAX_BRIGHTNESS) { brightness = CommandConstants.MAX_BRIGHTNESS; }
@@ -138,18 +147,21 @@ namespace LetThereBeLight.Services.Extensions
                 smartBulb.DeviceProperties.Brightness = brightness;
             }
 
-            return smartBulb;
+            return new CommandResponse { Success = isSuccesful, Message = isSuccesful ? "" : "Change Brightness Command Failed" };
         }
 
         /// <summary>
         /// Changes the Name of the smart bulb.
         /// </summary>
         /// <param name="name">The new name</param>
-        /// <returns><see cref="SmartBulb"/></returns>
-        public static SmartBulb SetName(this SmartBulb smartBulb, string name)
+        /// <returns>A <see cref="CommandResponse"/> if the response Success is false the Message will be populate</returns>
+        public static CommandResponse SetName(this SmartBulb smartBulb, string name)
         {
             // Cannot make changes on device that is off
-            if (!smartBulb.IsPoweredOn()) { return smartBulb; }
+            if (!smartBulb.IsPoweredOn())
+            {
+                return new CommandResponse { Success = false, Message = "Bulb is off, could not proccess command!" };
+            }
 
             var setNameCommand = new CommandModel
             {
@@ -163,7 +175,7 @@ namespace LetThereBeLight.Services.Extensions
                 smartBulb.DeviceProperties.Name = name;
             }
 
-            return smartBulb;
+            return new CommandResponse { Success = isSuccesful, Message = isSuccesful ? "" : "Set Name Command Failed" };
         }
 
         private static int GetSumRGB(int r, int g, int b)
