@@ -1,5 +1,6 @@
 ﻿using LetThereBeLight.Devices;
 using LetThereBeLight.Services;
+using LetThereBeLight.Services.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LetThereBeLight.Api.Controllers
@@ -18,9 +19,108 @@ namespace LetThereBeLight.Api.Controllers
         }
 
         [HttpGet("discover-devices")]
-        public IEnumerable<SmartBulb> DiscoverConnectedDevices(int timeOut = DEFAULT_DISCOVERY_TIME_OUT_MILISECONDS)
+        [ProducesResponseType(typeof(IEnumerable<ISmartBulb>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult DiscoverConnectedDevices(int timeOut = DEFAULT_DISCOVERY_TIME_OUT_MILISECONDS)
         {
-            return _discoveryService.DiscoverDevices(timeOut);
+            var result = _discoveryService.DiscoverDevices(timeOut);
+
+            if (result.Count > 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
+
+        [HttpPost("toggle")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult ToggleOnOff(int smartBulbId)
+        {
+            if (!_discoveryService.Devices.Any())
+            {
+                _discoveryService.DiscoverDevices(DEFAULT_DISCOVERY_TIME_OUT_MILISECONDS);
+            }
+
+            var smartBulb = _discoveryService.Devices.FirstOrDefault(sb => sb.DeviceProperties.Id == smartBulbId);
+
+            if (smartBulb == null) { return NotFound(); }
+
+            return Ok(smartBulb.ToggleOnOff());
+        }
+
+        [HttpPost("brightness")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult ChangeBrightness(int smartBulbId, int brightness)
+        {
+            if (!_discoveryService.Devices.Any())
+            {
+                _discoveryService.DiscoverDevices(DEFAULT_DISCOVERY_TIME_OUT_MILISECONDS);
+            }
+
+            var smartBulb = _discoveryService.Devices.FirstOrDefault(sb => sb.DeviceProperties.Id == smartBulbId);
+
+            if (smartBulb == null) { return NotFound(); }
+
+            return Ok(smartBulb.ChangeBrightness(brightness));
+        }
+
+        [HttpPost("color-temperature")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult ChangeColorTemperature(int smartBulbId, int colorTemperature)
+        {
+            if (!_discoveryService.Devices.Any())
+            {
+                _discoveryService.DiscoverDevices(DEFAULT_DISCOVERY_TIME_OUT_MILISECONDS);
+            }
+
+            var smartBulb = _discoveryService.Devices.FirstOrDefault(sb => sb.DeviceProperties.Id == smartBulbId);
+
+            if (smartBulb == null) { return NotFound(); }
+
+            return Ok(smartBulb.ChangeColorTemperature(colorTemperature));
+        }
+
+        [HttpPost("rgb")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult ChangeRGB(int smartBulbId, int r, int g, int b)
+        {
+            if (!_discoveryService.Devices.Any())
+            {
+                _discoveryService.DiscoverDevices(DEFAULT_DISCOVERY_TIME_OUT_MILISECONDS);
+            }
+
+            var smartBulb = _discoveryService.Devices.FirstOrDefault(sb => sb.DeviceProperties.Id == smartBulbId);
+
+            if (smartBulb == null) { return NotFound(); }
+
+            return Ok(smartBulb.ChangeRGB(r, g, b));
+        }
+
+        [HttpPost("name")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult ChangeName(int smartBulbId, string name)
+        {
+            HasDeviceDiscoveryRun();
+
+            var smartBulb = _discoveryService.Devices.FirstOrDefault(sb => sb.DeviceProperties.Id == smartBulbId);
+
+            if (smartBulb == null) { return NotFound(); }
+
+            return Ok(smartBulb.SetName(name));
+        }
+
+        private void HasDeviceDiscoveryRun()
+        {
+            if (!_discoveryService.Devices.Any())
+            {
+                _discoveryService.DiscoverDevices(DEFAULT_DISCOVERY_TIME_OUT_MILISECONDS);
+            }
         }
     }
 }

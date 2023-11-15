@@ -107,6 +107,13 @@ namespace LetThereBeLight.Services.Extensions
             return smartBulb;
         }
 
+        /// <summary>
+        /// Changes the brightness of the smart bulb.
+        /// </summary>
+        /// <param name="brightness">The new brightness</param>
+        /// <param name="effect">Shuld the transition be smooth or sudden (default is smooth)</param>
+        /// <param name="duration">The duration of the change (applies only id the effect is smooth)</param>
+        /// <returns><see cref="SmartBulb"/></returns>
         public static SmartBulb ChangeBrightness(
             this SmartBulb smartBulb,
             int brightness,
@@ -134,6 +141,11 @@ namespace LetThereBeLight.Services.Extensions
             return smartBulb;
         }
 
+        /// <summary>
+        /// Changes the Name of the smart bulb.
+        /// </summary>
+        /// <param name="name">The new name</param>
+        /// <returns><see cref="SmartBulb"/></returns>
         public static SmartBulb SetName(this SmartBulb smartBulb, string name)
         {
             // Cannot make changes on device that is off
