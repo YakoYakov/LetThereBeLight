@@ -134,6 +134,26 @@ namespace LetThereBeLight.Services.Extensions
             return smartBulb;
         }
 
+        public static SmartBulb SetName(this SmartBulb smartBulb, string name)
+        {
+            // Cannot make changes on device that is off
+            if (!smartBulb.IsPoweredOn()) { return smartBulb; }
+
+            var setNameCommand = new CommandModel
+            {
+                Method = Method.set_name,
+                Params = new List<object> { name }
+            };
+
+            var isSuccesful = smartBulb.SendCommand(setNameCommand);
+            if (isSuccesful)
+            {
+                smartBulb.DeviceProperties.Name = name;
+            }
+
+            return smartBulb;
+        }
+
         private static int GetSumRGB(int r, int g, int b)
         {
             var result = (r * 65536) + (g * 256) + b;
