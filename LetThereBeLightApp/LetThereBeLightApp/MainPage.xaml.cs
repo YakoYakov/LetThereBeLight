@@ -17,7 +17,7 @@ namespace LetThereBeLightApp
 
         private void Button_Clicked(object sender, EventArgs e)
         {
-
+            int brightness = (int)brightnessSlider.Value;
         }
     }
 }
