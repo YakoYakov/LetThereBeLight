@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace LetThereBeLightApp
@@ -15,9 +10,15 @@ namespace LetThereBeLightApp
             InitializeComponent();
         }
 
-        private void Button_Clicked(object sender, EventArgs e)
+        private void DiscoveryButton_Clicked(object sender, EventArgs e)
         {
-            int brightness = (int)brightnessSlider.Value;
+           // TODO run discovery and save found devices
+        }
+
+        private void Device_Clicked(object sender, EventArgs e)
+        {
+            // TODO run discovery and save found devices
+            Navigation.PushAsync(new DevicesPage(), true);
         }
     }
 }

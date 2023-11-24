@@ -1,14 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="LetThereBeLightApp.MainPage">
+             x:Class="LetThereBeLightApp.MainPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="Black">
 
-    <StackLayout BackgroundColor="Black">
-        <Label Text="Your Smart Lamps Controller App"/>
-        <Entry Placeholder="" />
-        <Slider x:Name="brightnessSlider" Minimum="1" Maximum="100" />
-        <Picker Title="Change Lamb color" />
-        <Button Text="Discover Devices" Clicked="Button_Clicked"/>
+    <StackLayout VerticalOptions="Center" Margin="15">
+
+        <Label Text="Your Smart Lamps Controller App"
+               VerticalOptions="Start"/>
+
+        <Button Text="Device Clicked Test"
+                Clicked="Device_Clicked"/>
+
+        <Button Text="Discover Devices"
+                Clicked="DiscoveryButton_Clicked"/>
+
+        <!--<ListView>
+            <ListView.ItemTemplate>
+                <DataTemplate></DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>-->
+
     </StackLayout>
 
 </ContentPage>

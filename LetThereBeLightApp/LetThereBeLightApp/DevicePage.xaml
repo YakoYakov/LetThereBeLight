@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LetThereBeLightApp.DevicesPage">
+    <ContentPage.Content>
+        <StackLayout>
+            
+            <Label Text="TODO set it to the current device name"
+                   VerticalOptions="CenterAndExpand" 
+                   HorizontalOptions="CenterAndExpand" />
+
+            <Slider DragCompleted="BrightnessSlider_DragCompleted"  x:Name="brightnessSlider"  Minimum="0" Maximum="100" />
+            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
