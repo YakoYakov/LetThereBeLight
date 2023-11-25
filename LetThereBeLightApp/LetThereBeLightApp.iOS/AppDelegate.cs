@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Foundation;
+﻿using Foundation;
+using System;
+using System.IO;
 using UIKit;
 
 namespace LetThereBeLightApp.iOS
@@ -23,7 +21,12 @@ namespace LetThereBeLightApp.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new App());
+
+            string dbName = "smart_device_db.sqlite";
+            string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "..", "Library");
+            string connectionString = Path.Combine(folderPath, dbName);
+
+            LoadApplication(new App(connectionString));
 
             return base.FinishedLaunching(app, options);
         }
