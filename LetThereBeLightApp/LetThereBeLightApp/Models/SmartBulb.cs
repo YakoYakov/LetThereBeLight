@@ -11,7 +11,8 @@ namespace LetThereBeLightApp.Models
         [MaxLength(100)]
         public int Brightness { get; set; }
         public int ColorMode { get; set; }
-        [MaxLength(4700)]
+
+        //Range between 2700K and 6500K
         public int ColorTemperature { get; set; }
         public int RGB { get; set; }
         public int Hue { get; set; }

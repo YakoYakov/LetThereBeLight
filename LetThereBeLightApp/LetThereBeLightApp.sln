@@ -7,7 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetThereBeLightApp.Android"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetThereBeLightApp.iOS", "LetThereBeLightApp.iOS\LetThereBeLightApp.iOS.csproj", "{B0413252-0610-4DE6-BD59-B55641A78519}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetThereBeLightApp", "LetThereBeLightApp\LetThereBeLightApp.csproj", "{F78CC4D6-323D-4AD5-9F05-96F8A16CF989}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LetThereBeLightApp", "LetThereBeLightApp\LetThereBeLightApp.csproj", "{F78CC4D6-323D-4AD5-9F05-96F8A16CF989}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AFD8EEBA-A105-45B1-AAC8-01F84EFE9028}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

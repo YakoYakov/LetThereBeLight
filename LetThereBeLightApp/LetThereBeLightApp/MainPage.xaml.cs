@@ -46,9 +46,7 @@ namespace LetThereBeLightApp
 
         private void Device_Selected(object sender, EventArgs e)
         {
-            var currentDevice = devicesListView.SelectedItem as SmartBulb;
-
-            if (currentDevice != null)
+            if (devicesListView.SelectedItem is SmartBulb currentDevice)
             {
                 Navigation.PushAsync(new DevicesPage(currentDevice), true);
             }

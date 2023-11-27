@@ -2,7 +2,7 @@
 {
     public class Constants
     {
-        private const string API_SERVICE_BASE_URL = "http://192.168.0.106/api/SmartBuld";
+        private const string API_SERVICE_BASE_URL = "http://192.168.0.106/api/SmartBulb";
 
         public const string DISCOVERY_ENDPOINT = API_SERVICE_BASE_URL + "/discover-devices?timeOut={0}";
 
