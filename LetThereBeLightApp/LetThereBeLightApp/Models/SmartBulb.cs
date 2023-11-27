@@ -7,8 +7,9 @@ namespace LetThereBeLightApp.Models
         [PrimaryKey]
         public int Id { get; set; }
         public string Location { get; set; } = string.Empty;
-        public string Power { get; set; } = string.Empty;
-        [MaxLength(100)]
+        public string Power { get; set; }
+        
+        // Can be and integer between 1 and 100
         public int Brightness { get; set; }
         public int ColorMode { get; set; }
 
