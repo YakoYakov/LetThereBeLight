@@ -1,6 +1,5 @@
 ﻿using LetThereBeLight.Devices;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 
@@ -16,14 +15,15 @@ namespace LetThereBeLight.Services
 
         public List<SmartBulb> Devices { get; set; } = new List<SmartBulb>();
 
-        public List<SmartBulb> DiscoverDevices(int SSDP_receiveTimeOut = SSDP_timeOut, int pingCount = 1, NetworkInterface? networkInterface = null)
+        public List<SmartBulb> DiscoverDevices(
+            int SSDP_receiveTimeOut = SSDP_timeOut)
         {
             Dictionary<IPAddress, SmartBulb> devices = new();
 
 
             using (var socket = new UdpClient())
             {
-                socket.Client.ReceiveTimeout = 1000;
+                socket.Client.ReceiveTimeout = SSDP_receiveTimeOut;
 
                 IPAddress multicastAddress = IPAddress.Parse(multiCastAddress);
 
