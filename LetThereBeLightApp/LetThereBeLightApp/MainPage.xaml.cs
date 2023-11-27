@@ -1,4 +1,5 @@
-﻿using LetThereBeLightApp.Models;
+﻿using LetThereBeLightApp.ExtrnalCalls;
+using LetThereBeLightApp.Models;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,12 @@ namespace LetThereBeLightApp
             InitializeComponent();
         }
 
-        private void DiscoveryButton_Clicked(object sender, EventArgs e)
+        private async void DiscoveryButton_Clicked(object sender, EventArgs e)
         {
             // TODO run discovery and save found devices
+            var test = await SmartBulbClient.DiscoverDevices();
+
+
             // sett the list view correctly with the discovered devices
             devicesListView.ItemsSource = new List<SmartBulb>();
 
@@ -40,7 +44,7 @@ namespace LetThereBeLightApp
             }
         }
 
-        private void Device_Selected(object sender, EventArgs e, int deviceId)
+        private void Device_Selected(object sender, EventArgs e)
         {
             var currentDevice = devicesListView.SelectedItem as SmartBulb;
 
