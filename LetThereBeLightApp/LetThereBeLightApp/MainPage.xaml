@@ -10,17 +10,17 @@
         <Label Text="Your Smart Lamps Controller App"
                VerticalOptions="Start"/>
 
-        <Button Text="Device Clicked Test"
-                Clicked="Device_Clicked"/>
-
         <Button Text="Discover Devices"
                 Clicked="DiscoveryButton_Clicked"/>
 
-        <!--<ListView>
+        <ListView x:Name="devicesListView"
+                  ItemSelected="Device_Selected">
             <ListView.ItemTemplate>
-                <DataTemplate></DataTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Name}"/>
+                </DataTemplate>
             </ListView.ItemTemplate>
-        </ListView>-->
+        </ListView>
 
     </StackLayout>
 

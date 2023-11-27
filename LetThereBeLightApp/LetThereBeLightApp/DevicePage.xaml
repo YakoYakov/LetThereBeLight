@@ -10,7 +10,10 @@
                    HorizontalOptions="CenterAndExpand" />
 
             <Slider DragCompleted="BrightnessSlider_DragCompleted"  x:Name="brightnessSlider"  Minimum="0" Maximum="100" />
-            
+
+
+            <Button Text="Delete Device"
+                Clicked="Delete_Button_Clicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
