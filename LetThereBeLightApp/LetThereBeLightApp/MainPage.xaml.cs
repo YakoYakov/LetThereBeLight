@@ -35,11 +35,11 @@ namespace LetThereBeLightApp
 
                 if (rows > 0)
                 {
-                    DisplayAlert("Found new smart devices", "Added the new devices to the APP", "Got It");
+                    await DisplayAlert("Found new smart devices", "Added the new devices to the APP", "Got It");
                 }
                 else
                 {
-                    DisplayAlert("Note", "No new devices were found!", "Got It");
+                    await DisplayAlert("Note", "No new devices were found!", "Got It");
                 }
             }
         }
