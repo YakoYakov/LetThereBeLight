@@ -2,10 +2,8 @@
 using LetThereBeLightApp.Models;
 using SQLite;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Xamarin.Forms;
-using Xamarin.Forms.Internals;
 
 namespace LetThereBeLightApp
 {
@@ -37,14 +35,12 @@ namespace LetThereBeLightApp
                 }
             );
 
-            devicesListView.ItemsSource = smartBulbsFromResult;
-
-            foreach (var smartBulb in smartBulbsFromResult)
+            using (SQLiteConnection connection = new SQLiteConnection(App.DatabaseConnectionString))
             {
-                using (SQLiteConnection connection = new SQLiteConnection(App.DatabaseConnectionString))
-                {
-                    connection.CreateTable<SmartBulb>();
+                connection.CreateTable<SmartBulb>();
 
+                foreach (var smartBulb in smartBulbsFromResult)
+                {
                     // Insert only if the device is new!
                     if (!connection.Table<SmartBulb>().ToList().Any(s => s.Id == smartBulb.Id))
                     {
@@ -60,6 +56,7 @@ namespace LetThereBeLightApp
                         }
                     }
                 }
+                devicesListView.ItemsSource = connection.Table<SmartBulb>().ToList();
             }
 
         }
