@@ -1,9 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:converter="clr-namespace:LetThereBeLightApp.Helpers"
              x:Class="LetThereBeLightApp.App">
     <Application.Resources>
         <ResourceDictionary>
+            <converter:NameToPowerConverter x:Key="NameToPowerConverter" />
             <Color x:Key="dark-grey">#2e2a2a</Color>
             <Color x:Key="orange">#ff9300</Color>
             

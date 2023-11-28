@@ -14,10 +14,30 @@
                 Clicked="DiscoveryButton_Clicked"/>
 
         <ListView x:Name="devicesListView"
+                  HorizontalOptions="FillAndExpand"
                   ItemSelected="Device_Selected">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Name}"/>
+                    <ImageCell x:Name="lampImage" ImageSource="{Binding Power, Converter={StaticResource NameToPowerConverter}}">
+                        
+                        <!--<Grid>-->
+
+                            <!--<Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition  Height="*"/>
+                                <RowDefinition  Height="*"/>
+                            </Grid.RowDefinitions>
+
+
+                            <Label Text="{Binding Name}"
+                                   FontSize="Title" />
+                            <Label Grid.Row="1" Text="{Binding Power}"/>
+                            <Label Grid.Column="1" Text="Demo Text not sure..."/>
+                        </Grid>-->
+                    </ImageCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
