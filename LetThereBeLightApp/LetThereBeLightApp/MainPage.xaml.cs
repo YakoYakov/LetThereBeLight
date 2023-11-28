@@ -2,9 +2,9 @@
 using LetThereBeLightApp.Models;
 using SQLite;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Xamarin.Forms;
+using static Android.Bluetooth.BluetoothClass;
 
 namespace LetThereBeLightApp
 {
@@ -15,61 +15,41 @@ namespace LetThereBeLightApp
             InitializeComponent();
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            using (SQLiteConnection connection = new SQLiteConnection(App.DatabaseConnectionString))
+            {
+                connection.CreateTable<SmartBulb>();
+
+                var devices = connection.Table<SmartBulb>().ToList();
+                devicesListView.ItemsSource = connection.Table<SmartBulb>().ToList();
+            }
+        }
+
         private async void DiscoveryButton_Clicked(object sender, EventArgs e)
         {
-            // TODO run discovery and save found devices
-            //var result = await SmartBulbClient.DiscoverDevices();
-            
-            //var smartBulbsFromResult = result.Select(
-            //    r => new SmartBulb
-            //    {
-            //        Id = r.deviceProperties.id,
-            //        Brightness = r.deviceProperties.brightness,
-            //        ColorMode = r.deviceProperties.colorMode,
-            //        ColorTemperature = r.deviceProperties.colorTemperature,
-            //        Hue = r.deviceProperties.hue,
-            //        Saturation = r.deviceProperties.saturation,
-            //        Location = r.deviceProperties.location,
-            //        Power = r.deviceProperties.power == 0 ? "On" : "Off",
-            //        Name = r.deviceProperties.name,
-            //        RGB = r.deviceProperties.rgb,
-            //    }
-            //);
+            var result = await SmartBulbClient.DiscoverDevices();
+
+            var smartBulbsFromResult = result.Select(
+                r => new SmartBulb
+                {
+                    Id = r.deviceProperties.id,
+                    Brightness = r.deviceProperties.brightness,
+                    ColorMode = r.deviceProperties.colorMode,
+                    ColorTemperature = r.deviceProperties.colorTemperature,
+                    Hue = r.deviceProperties.hue,
+                    Saturation = r.deviceProperties.saturation,
+                    Location = r.deviceProperties.location,
+                    Power = r.deviceProperties.power == 0 ? "On" : "Off",
+                    Name = r.deviceProperties.name,
+                    RGB = r.deviceProperties.rgb,
+                }
+            );
 
             using (SQLiteConnection connection = new SQLiteConnection(App.DatabaseConnectionString))
             {
                 connection.CreateTable<SmartBulb>();
-                var smartBulbsFromResult = new List<SmartBulb>();
-                //TODO remove used just for testing
-                smartBulbsFromResult.Add(
-                    new SmartBulb
-                    {
-                        Id = 33,
-                        Brightness = 80,
-                        ColorMode = 0,
-                        ColorTemperature = 3300,
-                        Hue = 0,
-                        Saturation = 0,
-                        Location = "fghfgh",
-                        Power = "On",
-                        Name = "Benny lamp",
-                        RGB = 123,
-                    });
-
-                smartBulbsFromResult.ToList().Add(
-                   new SmartBulb
-                   {
-                       Id = 354,
-                       Brightness = 80,
-                       ColorMode = 0,
-                       ColorTemperature = 3300,
-                       Hue = 0,
-                       Saturation = 0,
-                       Location = "fghfgh",
-                       Power = "Off",
-                       Name = "Yako`s lamp",
-                       RGB = 123,
-                   });
 
                 foreach (var smartBulb in smartBulbsFromResult)
                 {
@@ -88,6 +68,7 @@ namespace LetThereBeLightApp
                         }
                     }
                 }
+
                 devicesListView.ItemsSource = connection.Table<SmartBulb>().ToList();
             }
         }
@@ -97,6 +78,27 @@ namespace LetThereBeLightApp
             if (devicesListView.SelectedItem is SmartBulb currentDevice)
             {
                 Navigation.PushAsync(new DevicesPage(currentDevice), true);
+            }
+        }
+
+        private void Delete_Device(object sender, EventArgs e)
+        {
+            var listItem = sender as ImageButton;
+            SmartBulb selectedDevice = (SmartBulb)listItem.CommandParameter;
+            using (SQLiteConnection connection = new SQLiteConnection(App.DatabaseConnectionString))
+            {
+                connection.CreateTable<SmartBulb>();
+                int rows = connection.Delete(selectedDevice);
+
+                if (rows > 0)
+                {
+                    devicesListView.ItemsSource = connection.Table<SmartBulb>().ToList();
+                    DisplayAlert("Success", "Device was deleted", "Got It");
+                }
+                else
+                {
+                    DisplayAlert("Error", "No Device was deleted", "Got It");
+                }
             }
         }
     }
