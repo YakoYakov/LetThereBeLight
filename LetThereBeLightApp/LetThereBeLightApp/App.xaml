@@ -13,7 +13,7 @@
                 <Setter Property="CornerRadius" Value="10"/>
                 <Setter Property="TextColor" Value="{StaticResource orange}"/>
                 <Setter Property="BackgroundColor" Value="{StaticResource dark-grey}"/>
-                <Setter Property="Margin" Value="0, 15, 0, 0" />
+                <Setter Property="Margin" Value="0, 15, 0, 25" />
             </Style>
 
             <Style TargetType="Label">

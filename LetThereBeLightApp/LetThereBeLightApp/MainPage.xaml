@@ -8,43 +8,45 @@
     <StackLayout VerticalOptions="Center" Margin="15">
 
         <Label Text="Your Smart Lamps Controller App"
-               VerticalOptions="Start"/>
+               FontSize="Medium"
+               VerticalOptions="Center"
+               HorizontalOptions="CenterAndExpand"/>
 
         <Button Text="Discover Devices"
                 Clicked="DiscoveryButton_Clicked"/>
 
         <ListView x:Name="devicesListView"
                   HorizontalOptions="FillAndExpand"
-                  ItemSelected="Device_Selected">
+                  ItemSelected="Device_Selected"
+                  HasUnevenRows="true">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <!--<ImageCell
-                        x:Name="lampImage" 
-                        ImageSource="{Binding Power, Converter={StaticResource NameToPowerConverter}}"
-                        Text="{Binding Name}"
-                        TextColor="{StaticResource orange}"
-                        >
-                    </ImageCell>-->
-                    <ViewCell>
-                        <StackLayout Orientation="Horizontal">
-                            <Image Source="{Binding Power, Converter={StaticResource NameToPowerConverter}}"
+                    <ViewCell Height="100">
+                        <Frame BackgroundColor="{StaticResource dark-grey}"
+                               CornerRadius="25"
+                               Margin="0, 15, 0, 0">
+                            <StackLayout Orientation="Horizontal" >
+                                <Image Source="{Binding Power, Converter={StaticResource NameToPowerConverter}}"
                                    HeightRequest="64"
-                                   WidthRequest="64"/>
-                            <StackLayout HorizontalOptions="StartAndExpand"
+                                   WidthRequest="64"
+                                   Margin="10, 0, 0, 0"/>
+                                <StackLayout HorizontalOptions="StartAndExpand"
                                          Spacing="0">
-                                <Label Text="{Binding Name}"
+                                    <Label Text="{Binding Name}"
                                        FontSize="Medium"
                                        FontAttributes="Bold"/>
-                                <Label Text="{Binding Power}"
+                                    <Label Text="{Binding Power}"
                                        />
-                            </StackLayout>
-                            <StackLayout Orientation="Horizontal">
-                                <ImageButton Source="delete.png"
+                                </StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <ImageButton Source="delete.png"
                                              BackgroundColor="Transparent"
                                              CommandParameter="{Binding .}"
-                                             Clicked="Delete_Device"/>
+                                             Clicked="Delete_Device"
+                                             Margin="0, 0, 10, 0"/>
+                                </StackLayout>
                             </StackLayout>
-                        </StackLayout>
+                        </Frame>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>

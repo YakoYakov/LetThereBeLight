@@ -47,11 +47,28 @@ namespace LetThereBeLightApp
                 }
             );
 
+            var test = new SmartBulb
+            {
+                Id = 11,
+                Brightness = 11,
+                ColorMode = 11,
+                ColorTemperature = 11,
+                Hue = 11,
+                Saturation = 11,
+                Location = "",
+                Power = "Off",
+                Name = "Bennys lamp",
+                RGB = 1,
+            };
+
+            var smartBulbsFromResult2 = smartBulbsFromResult.ToList();
+            smartBulbsFromResult2.Add( test );
+
             using (SQLiteConnection connection = new SQLiteConnection(App.DatabaseConnectionString))
             {
                 connection.CreateTable<SmartBulb>();
 
-                foreach (var smartBulb in smartBulbsFromResult)
+                foreach (var smartBulb in smartBulbsFromResult2)
                 {
                     // Insert only if the device is new!
                     if (!connection.Table<SmartBulb>().ToList().Any(s => s.Id == smartBulb.Id))

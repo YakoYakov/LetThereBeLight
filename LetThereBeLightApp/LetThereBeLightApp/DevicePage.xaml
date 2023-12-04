@@ -1,16 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="LetThereBeLightApp.DevicesPage">
-    <ContentPage.Content>
-        <StackLayout>
-            
-            <Label Text="TODO set it to the current device name"
+             x:Class="LetThereBeLightApp.DevicesPage"
+             BackgroundColor="Black">
+    <StackLayout>
+
+        <Label Text="{Binding Name}"
                    VerticalOptions="CenterAndExpand" 
                    HorizontalOptions="CenterAndExpand" />
 
-            <Slider DragCompleted="BrightnessSlider_DragCompleted"  x:Name="brightnessSlider"  Minimum="0" Maximum="100" />
+        <Label Text="Change Device Brightness"></Label>
+        <Slider DragCompleted="BrightnessSlider_DragCompleted"  x:Name="brightnessSlider" Maximum="100" Minimum="1" />
 
-        </StackLayout>
-    </ContentPage.Content>
+        <Label Text="Change Color Temperature"></Label>
+        <Slider DragCompleted="BrightnessSlider_DragCompleted"  x:Name="warmSlider" Maximum="6500" Minimum="2700" />
+
+        <Label Text="Change Device Color"></Label>
+        <Slider DragCompleted="BrightnessSlider_DragCompleted"  x:Name="warmSlider" Maximum="6500" Minimum="2700" />
+
+        <Label Text="Change Device Name"></Label>
+        <Slider DragCompleted="BrightnessSlider_DragCompleted"  x:Name="warmSlider" Maximum="6500" Minimum="2700" />
+    </StackLayout>
 </ContentPage>

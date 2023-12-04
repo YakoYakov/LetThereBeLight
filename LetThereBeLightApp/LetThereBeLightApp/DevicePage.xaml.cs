@@ -15,6 +15,7 @@ namespace LetThereBeLightApp
         {
             InitializeComponent();
             _device = device;
+            BindingContext = _device;
         }
 
         private void BrightnessSlider_DragCompleted(object sender, EventArgs e)
