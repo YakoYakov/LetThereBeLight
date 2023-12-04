@@ -1,24 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
              x:Class="LetThereBeLightApp.DevicesPage"
              BackgroundColor="Black">
     <StackLayout>
 
         <Label Text="{Binding Name}"
-                   VerticalOptions="CenterAndExpand" 
-                   HorizontalOptions="CenterAndExpand" />
+               VerticalOptions="CenterAndExpand" 
+               HorizontalOptions="CenterAndExpand"
+               FontSize="Large"
+               Margin="0, 0, 0, -25"/>
 
-        <Label Text="Change Device Brightness"></Label>
-        <Slider DragCompleted="BrightnessSlider_DragCompleted"  x:Name="brightnessSlider" Maximum="100" Minimum="1" />
+        <Label Text="Change Device Brightness"
+               Margin="15"/>
+        <Slider DragCompleted="BrightnessSlider_DragCompleted"  
+                x:Name="brightnessSlider" 
+                Maximum="100" Minimum="1" 
+                ThumbColor="OrangeRed" 
+                MinimumTrackColor="DarkOrange" />
 
-        <Label Text="Change Color Temperature"></Label>
-        <Slider DragCompleted="BrightnessSlider_DragCompleted"  x:Name="warmSlider" Maximum="6500" Minimum="2700" />
+        <Label Text="Change Color Temperature"
+               Margin="15"/>
+        <Slider DragCompleted="WarmSlider_DragCompleted"  
+                x:Name="warmSlider" 
+                Maximum="6500" 
+                Minimum="2700" 
+                ThumbColor="OrangeRed" 
+                MinimumTrackColor="DarkOrange" />
 
-        <Label Text="Change Device Color"></Label>
-        <Slider DragCompleted="BrightnessSlider_DragCompleted"  x:Name="warmSlider" Maximum="6500" Minimum="2700" />
-
-        <Label Text="Change Device Name"></Label>
-        <Slider DragCompleted="BrightnessSlider_DragCompleted"  x:Name="warmSlider" Maximum="6500" Minimum="2700" />
+        <Label Text="Change Device Color"
+               Margin="15"/>
+        <colorpicker:ColorWheel x:Name="ColorWheel1"
+                                ShowAlphaSlider="false"
+                                ShowLuminositySlider="false"
+                                ShowLuminosityWheel="true"
+                                Padding="5"
+                                Grid.Row="1"
+                                WidthRequest="200"
+                                />
+        <Button Text="Update Color"
+                Clicked="UpdateColor"
+                Margin="25, 0, 25, 0"/>
+        
+        
+        <Label Text="Change Device Name" Margin="15, 5, -10, -40"></Label>
+        <Frame BackgroundColor="{StaticResource dark-grey}"
+               CornerRadius="15"
+               Margin="25, 0, 25, -20"
+               VerticalOptions="CenterAndExpand">
+            
+        <Entry x:Name="deviceName"
+               Placeholder="Name"
+               />
+        </Frame>
+        <Button Text="Update Name"
+                Clicked="UpdateName"
+                Margin="25, 0, 25, 0"/>
     </StackLayout>
 </ContentPage>
