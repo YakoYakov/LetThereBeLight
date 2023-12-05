@@ -82,6 +82,8 @@
             
         <Entry x:Name="deviceName"
                Placeholder="Name"
+               TextColor="WhiteSmoke"
+               PlaceholderColor="WhiteSmoke"
                />
         </Frame>
         <Button Text="Update Name"
