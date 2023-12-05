@@ -12,24 +12,55 @@
                Margin="0, 0, 0, -25"/>
 
         <Label Text="Change Device Brightness"
-               Margin="15"/>
-        <Slider DragCompleted="BrightnessSlider_DragCompleted"  
+               Margin="15, 0, 0, -75"/>
+        <Label x:Name="brightnessToolTip" 
+               Text="1" HorizontalOptions="Start" 
+               FontSize="Micro" 
+               HorizontalTextAlignment="Center" 
+               VerticalOptions="EndAndExpand"
+               BackgroundColor="{StaticResource dark-grey}">
+            <Label.Margin>
+                <OnPlatform x:TypeArguments="Thickness">
+                    <On Platform="Android" Value="10,0"/>
+                </OnPlatform>
+            </Label.Margin>
+        </Label>
+        <Slider DragCompleted="BrightnessSlider_DragCompleted"
+                ValueChanged="brightnessSlider_ValueChanged"
                 x:Name="brightnessSlider" 
                 Maximum="100" Minimum="1" 
-                ThumbColor="OrangeRed" 
-                MinimumTrackColor="DarkOrange" />
+                ThumbColor="#e00b0b" 
+                MinimumTrackColor="Orange"
+                MaximumTrackColor="OrangeRed"
+                />
 
         <Label Text="Change Color Temperature"
-               Margin="15"/>
-        <Slider DragCompleted="WarmSlider_DragCompleted"  
+               Margin="15, 0, 0, -75"/>
+        <Label x:Name="colorTemperatureToolTip" 
+               Text="2700" 
+               HorizontalOptions="Start"
+               FontSize="Micro" 
+               HorizontalTextAlignment="Center" 
+               VerticalOptions="EndAndExpand"
+               BackgroundColor="{StaticResource dark-grey}"
+               >
+            <Label.Margin>
+                <OnPlatform x:TypeArguments="Thickness">
+                    <On Platform="Android" Value="10,0"/>
+                </OnPlatform>
+            </Label.Margin>
+        </Label>
+        <Slider DragCompleted="WarmSlider_DragCompleted"
+                ValueChanged="warmSlider_ValueChanged"
                 x:Name="warmSlider" 
                 Maximum="6500" 
                 Minimum="2700" 
-                ThumbColor="OrangeRed" 
-                MinimumTrackColor="DarkOrange" />
+                ThumbColor="#e00b0b" 
+                MinimumTrackColor="Orange"
+                MaximumTrackColor="OrangeRed"/>
 
         <Label Text="Change Device Color"
-               Margin="15"/>
+               Margin="15, 0, 0, -10 "/>
         <colorpicker:ColorWheel x:Name="ColorWheel1"
                                 ShowAlphaSlider="false"
                                 ShowLuminositySlider="false"
@@ -43,7 +74,7 @@
                 Margin="25, 0, 25, 0"/>
         
         
-        <Label Text="Change Device Name" Margin="15, 5, -10, -40"></Label>
+        <Label Text="Change Device Name" Margin="22, 20, 0, -40"></Label>
         <Frame BackgroundColor="{StaticResource dark-grey}"
                CornerRadius="15"
                Margin="25, 0, 25, -20"

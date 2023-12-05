@@ -72,5 +72,18 @@ namespace LetThereBeLightApp
                 var newName = deviceName.Text.Trim();
             }
         }
+
+        private async void brightnessSlider_ValueChanged(object sender, ValueChangedEventArgs e)
+        {
+            brightnessToolTip.Text = Math.Round(brightnessSlider.Value).ToString();
+            await brightnessToolTip.TranslateTo(brightnessSlider.Value * ((brightnessSlider.Width - 40) / brightnessSlider.Maximum), 0, 100);
+        }
+
+        private async void warmSlider_ValueChanged(object sender, ValueChangedEventArgs e)
+        {
+            colorTemperatureToolTip.Text = Math.Round(warmSlider.Value).ToString();
+            await colorTemperatureToolTip.TranslateTo(
+                (warmSlider.Value - 2700) * ((warmSlider.Width - 40) / 3800), 0, 100);
+        }
     }
 }
