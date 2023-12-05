@@ -74,7 +74,7 @@
                 Margin="25, 0, 25, 0"/>
         
         
-        <Label Text="Change Device Name" Margin="22, 20, 0, -40"></Label>
+        <Label Text="Change Device Name" Margin="24, 20, 0, -40"></Label>
         <Frame BackgroundColor="{StaticResource dark-grey}"
                CornerRadius="15"
                Margin="25, 0, 25, -20"
