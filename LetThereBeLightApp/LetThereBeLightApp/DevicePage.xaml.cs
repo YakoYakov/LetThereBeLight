@@ -19,6 +19,12 @@ namespace LetThereBeLightApp
             BindingContext = _device;
         }
 
+        private void SwitchOnOff(object sender, EventArgs e)
+        {
+            //TODO make call to turn off on lamp
+            //Persist data to db
+        }
+
         private void BrightnessSlider_DragCompleted(object sender, EventArgs e)
         {
             //TODO send  command for changing brightness
