@@ -1,4 +1,5 @@
-﻿using LetThereBeLight.Devices;
+﻿using LetThereBeLight.Api.BindingModels;
+using LetThereBeLight.Devices;
 using LetThereBeLight.Services;
 using LetThereBeLight.Services.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -36,11 +37,11 @@ namespace LetThereBeLight.Api.Controllers
         [HttpPost("toggle")]
         [ProducesResponseType(typeof(CommandResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult ToggleOnOff(int smartBulbId)
+        public ActionResult ToggleOnOff(BaseBindingModel bindingModel) 
         {
             HasDeviceDiscoveryRun();
 
-            var smartBulb = _discoveryService.Devices.FirstOrDefault(sb => sb.DeviceProperties.Id == smartBulbId);
+            var smartBulb = _discoveryService.Devices.FirstOrDefault(sb => sb.DeviceProperties.Id == bindingModel.SmartBulbId);
 
             if (smartBulb == null) { return NotFound(); }
 
@@ -50,57 +51,57 @@ namespace LetThereBeLight.Api.Controllers
         [HttpPost("brightness")]
         [ProducesResponseType(typeof(CommandResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult ChangeBrightness(int smartBulbId, int brightness)
+        public ActionResult ChangeBrightness(BrightnessModel bindingModel)
         {
             HasDeviceDiscoveryRun();
 
-            var smartBulb = _discoveryService.Devices.FirstOrDefault(sb => sb.DeviceProperties.Id == smartBulbId);
+            var smartBulb = _discoveryService.Devices.FirstOrDefault(sb => sb.DeviceProperties.Id == bindingModel.SmartBulbId);
 
             if (smartBulb == null) { return NotFound(); }
 
-            return Ok(smartBulb.ChangeBrightness(brightness));
+            return Ok(smartBulb.ChangeBrightness(bindingModel.Brightness));
         }
 
         [HttpPost("color-temperature")]
         [ProducesResponseType(typeof(CommandResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult ChangeColorTemperature(int smartBulbId, int colorTemperature)
+        public ActionResult ChangeColorTemperature(ColorTempModel bindingModel)
         {
             HasDeviceDiscoveryRun();
 
-            var smartBulb = _discoveryService.Devices.FirstOrDefault(sb => sb.DeviceProperties.Id == smartBulbId);
+            var smartBulb = _discoveryService.Devices.FirstOrDefault(sb => sb.DeviceProperties.Id == bindingModel.SmartBulbId);
 
             if (smartBulb == null) { return NotFound(); }
 
-            return Ok(smartBulb.ChangeColorTemperature(colorTemperature));
+            return Ok(smartBulb.ChangeColorTemperature(bindingModel.ColorTemperature));
         }
 
         [HttpPost("rgb")]
         [ProducesResponseType(typeof(CommandResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult ChangeRGB(int smartBulbId, int r, int g, int b)
+        public ActionResult ChangeRGB(ColorModel bindingModel)
         {
             HasDeviceDiscoveryRun();
 
-            var smartBulb = _discoveryService.Devices.FirstOrDefault(sb => sb.DeviceProperties.Id == smartBulbId);
+            var smartBulb = _discoveryService.Devices.FirstOrDefault(sb => sb.DeviceProperties.Id == bindingModel.SmartBulbId);
 
             if (smartBulb == null) { return NotFound(); }
 
-            return Ok(smartBulb.ChangeRGB(r, g, b));
+            return Ok(smartBulb.ChangeRGB(bindingModel.R, bindingModel.G, bindingModel.B));
         }
 
         [HttpPost("name")]
         [ProducesResponseType(typeof(CommandResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult ChangeName(int smartBulbId, string name)
+        public ActionResult ChangeName(NameModel bindingModel)
         {
             HasDeviceDiscoveryRun();
 
-            var smartBulb = _discoveryService.Devices.FirstOrDefault(sb => sb.DeviceProperties.Id == smartBulbId);
+            var smartBulb = _discoveryService.Devices.FirstOrDefault(sb => sb.DeviceProperties.Id == bindingModel.SmartBulbId);
 
             if (smartBulb == null) { return NotFound(); }
 
-            return Ok(smartBulb.SetName(name));
+            return Ok(smartBulb.SetName(bindingModel.Name));
         }
 
         private void HasDeviceDiscoveryRun()

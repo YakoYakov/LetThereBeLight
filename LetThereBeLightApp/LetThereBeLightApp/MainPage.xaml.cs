@@ -4,7 +4,6 @@ using SQLite;
 using System;
 using System.Linq;
 using Xamarin.Forms;
-using static Android.Bluetooth.BluetoothClass;
 
 namespace LetThereBeLightApp
 {

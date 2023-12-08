@@ -1,9 +1,11 @@
-﻿using LetThereBeLightApp.Models;
+﻿using LetThereBeLightApp.ExtrnalCalls;
+using LetThereBeLightApp.Models;
 using SkiaSharp.Views.Forms;
 using SQLite;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using static LetThereBeLightApp.Constants.Constants;
 
 namespace LetThereBeLightApp
 {
@@ -19,14 +21,20 @@ namespace LetThereBeLightApp
             BindingContext = _device;
         }
 
-        private void SwitchOnOff(object sender, EventArgs e)
+        private async void SwitchOnOff(object sender, EventArgs e)
         {
+            var payload = new { SmartBulbId = _device.Id };
+            var result = await SmartBulbClient.SendCommandAsync(TOGGLE_ENDPOINT, payload);
+            ;
             //TODO make call to turn off on lamp
             //Persist data to db
         }
 
-        private void BrightnessSlider_DragCompleted(object sender, EventArgs e)
+        private async void BrightnessSlider_DragCompleted(object sender, EventArgs e)
         {
+            var payload = new { SmartBulbId = _device.Id, Brightness = (int)Math.Round(brightnessSlider.Value) };
+            var result = await SmartBulbClient.SendCommandAsync(CHANGE_BRIGHTNESS_ENDPOINT, payload);
+
             //TODO send  command for changing brightness
             using (SQLiteConnection connection = new SQLiteConnection(App.DatabaseConnectionString))
             {
@@ -45,8 +53,11 @@ namespace LetThereBeLightApp
             }
         }
 
-        private void WarmSlider_DragCompleted(object sender, EventArgs e)
+        private async void WarmSlider_DragCompleted(object sender, EventArgs e)
         {
+            var payload = new { SmartBulbId = _device.Id, ColorTemperature = (int)Math.Round(warmSlider.Value) };
+            var result = await SmartBulbClient.SendCommandAsync(CHANGE_COLOR_TEMPERATURE_ENDPOINT, payload);
+
             //TODO send  command for changing color temperature
             using (SQLiteConnection connection = new SQLiteConnection(App.DatabaseConnectionString))
             {
@@ -65,17 +76,22 @@ namespace LetThereBeLightApp
             }
         }
 
-
-        private void UpdateColor(object sender, EventArgs e)
+        private async void UpdateColor(object sender, EventArgs e)
         {
             var selectedColor = ColorWheel1.SelectedColor.ToSKColor();
+            var payload = new { SmartBulbId = _device.Id, R = selectedColor.Red, G = selectedColor.Green, B = selectedColor.Blue };
+            var result = await SmartBulbClient.SendCommandAsync(CHANGE_RGB_ENDPOINT, payload);
+
         }
 
-        private void UpdateName(object sender, EventArgs e)
+        private async void UpdateName(object sender, EventArgs e)
         {
             if (deviceName.Text != null)
             {
                 var newName = deviceName.Text.Trim();
+
+                var payload = new { SmartBulbId = _device.Id, Name = deviceName.Text.Trim()};
+                var result = await SmartBulbClient.SendCommandAsync(CHANGE_NAME_ENDPOINT, payload);
             }
         }
 
