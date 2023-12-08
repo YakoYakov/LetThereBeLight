@@ -19,5 +19,7 @@ namespace LetThereBeLightApp.Models
         public int Hue { get; set; }
         public int Saturation { get; set; }
         public string Name { get; set; } = string.Empty;
+
+        public bool ShowNameLabel => !string.IsNullOrWhiteSpace(Name);
     }
 }

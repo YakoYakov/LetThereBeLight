@@ -3,6 +3,7 @@ using LetThereBeLightApp.Models;
 using SkiaSharp.Views.Forms;
 using SQLite;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using static LetThereBeLightApp.Constants.Constants;
@@ -19,6 +20,16 @@ namespace LetThereBeLightApp
             InitializeComponent();
             _device = device;
             BindingContext = _device;
+            brightnessSlider.Value = _device.Brightness;
+            warmSlider.Value = _device.ColorTemperature;
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+
+            await ChangeBrightnessToolTipPosition();
+            await ChangeWarmToolTipPosition();
         }
 
         private async void SwitchOnOff(object sender, EventArgs e)
@@ -97,11 +108,20 @@ namespace LetThereBeLightApp
 
         private async void brightnessSlider_ValueChanged(object sender, ValueChangedEventArgs e)
         {
+            await ChangeBrightnessToolTipPosition();
+        }
+
+        private async void warmSlider_ValueChanged(object sender, ValueChangedEventArgs e)
+        {
+            await ChangeWarmToolTipPosition();
+        }
+        private async Task ChangeBrightnessToolTipPosition()
+        {
             brightnessToolTip.Text = Math.Round(brightnessSlider.Value).ToString();
             await brightnessToolTip.TranslateTo(brightnessSlider.Value * ((brightnessSlider.Width - 40) / brightnessSlider.Maximum), 0, 100);
         }
 
-        private async void warmSlider_ValueChanged(object sender, ValueChangedEventArgs e)
+        private async Task ChangeWarmToolTipPosition()
         {
             colorTemperatureToolTip.Text = Math.Round(warmSlider.Value).ToString();
             await colorTemperatureToolTip.TranslateTo(

@@ -6,6 +6,7 @@
     <StackLayout>
 
         <Label Text="{Binding Name}"
+               IsVisible="{Binding ShowNameLabel}"
                VerticalOptions="CenterAndExpand" 
                HorizontalOptions="CenterAndExpand"
                FontSize="Large"
