@@ -22,6 +22,8 @@ namespace LetThereBeLightApp
             DatabaseConnectionString = connectionString;
         }
 
+
+
         protected override void OnStart()
         {
         }

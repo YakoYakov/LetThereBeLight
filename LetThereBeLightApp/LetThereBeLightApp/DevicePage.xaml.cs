@@ -36,9 +36,23 @@ namespace LetThereBeLightApp
         {
             var payload = new { SmartBulbId = _device.Id };
             var result = await SmartBulbClient.SendCommandAsync(TOGGLE_ENDPOINT, payload);
-            ;
-            //TODO make call to turn off on lamp
-            //Persist data to db
+
+            if (result.Success)
+            {
+                using (SQLiteConnection connection = new SQLiteConnection(App.DatabaseConnectionString))
+                {
+                    connection.CreateTable<SmartBulb>();
+                    _device.Power = _device.Power == "On" ? _device.Power = "Off" : _device.Power = "On";
+                    connection.Update(_device);
+                }
+            }
+            else
+            {
+                await DisplayAlert(
+                    "Operation Failed!",
+                    result.Message,
+                    "Got It");
+            }
         }
 
         private async void BrightnessSlider_DragCompleted(object sender, EventArgs e)
@@ -46,21 +60,21 @@ namespace LetThereBeLightApp
             var payload = new { SmartBulbId = _device.Id, Brightness = (int)Math.Round(brightnessSlider.Value) };
             var result = await SmartBulbClient.SendCommandAsync(CHANGE_BRIGHTNESS_ENDPOINT, payload);
 
-            //TODO send  command for changing brightness
-            using (SQLiteConnection connection = new SQLiteConnection(App.DatabaseConnectionString))
+            if (result.Success)
             {
-                connection.CreateTable<SmartBulb>();
-                int rows = connection.Update(_device);
-
-                //if (rows > 0)
-                //{
-                //    DisplayAlert("Success", "Device Brightness was changed", "Got It");
-
-                //}
-                //else
-                //{
-                //    DisplayAlert("Note", "No new devices were found!", "Got It");
-                //}
+                using (SQLiteConnection connection = new SQLiteConnection(App.DatabaseConnectionString))
+                {
+                    connection.CreateTable<SmartBulb>();
+                    _device.Brightness = (int)Math.Round(brightnessSlider.Value);
+                    connection.Update(_device);
+                }
+            }
+            else
+            {
+                await DisplayAlert(
+                    "Operation Failed!",
+                    result.Message,
+                    "Got It");
             }
         }
 
@@ -69,21 +83,21 @@ namespace LetThereBeLightApp
             var payload = new { SmartBulbId = _device.Id, ColorTemperature = (int)Math.Round(warmSlider.Value) };
             var result = await SmartBulbClient.SendCommandAsync(CHANGE_COLOR_TEMPERATURE_ENDPOINT, payload);
 
-            //TODO send  command for changing color temperature
-            using (SQLiteConnection connection = new SQLiteConnection(App.DatabaseConnectionString))
+            if (result.Success)
             {
-                connection.CreateTable<SmartBulb>();
-                int rows = connection.Update(_device);
-
-                //if (rows > 0)
-                //{
-                //    DisplayAlert("Success", "Device Brightness was changed", "Got It");
-
-                //}
-                //else
-                //{
-                //    DisplayAlert("Note", "No new devices were found!", "Got It");
-                //}
+                using (SQLiteConnection connection = new SQLiteConnection(App.DatabaseConnectionString))
+                {
+                    connection.CreateTable<SmartBulb>();
+                    _device.ColorTemperature = (int)Math.Round(warmSlider.Value);
+                    connection.Update(_device);
+                }
+            }
+            else
+            {
+                await DisplayAlert(
+                    "Operation Failed!",
+                    result.Message,
+                    "Got It");
             }
         }
 
@@ -93,16 +107,39 @@ namespace LetThereBeLightApp
             var payload = new { SmartBulbId = _device.Id, R = selectedColor.Red, G = selectedColor.Green, B = selectedColor.Blue };
             var result = await SmartBulbClient.SendCommandAsync(CHANGE_RGB_ENDPOINT, payload);
 
+            if (!result.Success)
+            {
+
+                await DisplayAlert(
+                    "Operation Failed!",
+                    result.Message,
+                    "Got It");
+            }
         }
 
         private async void UpdateName(object sender, EventArgs e)
         {
             if (deviceName.Text != null)
             {
-                var newName = deviceName.Text.Trim();
-
-                var payload = new { SmartBulbId = _device.Id, Name = deviceName.Text.Trim()};
+                var payload = new { SmartBulbId = _device.Id, Name = deviceName.Text.Trim() };
                 var result = await SmartBulbClient.SendCommandAsync(CHANGE_NAME_ENDPOINT, payload);
+
+                if (result.Success)
+                {
+                    using (SQLiteConnection connection = new SQLiteConnection(App.DatabaseConnectionString))
+                    {
+                        connection.CreateTable<SmartBulb>();
+                        _device.Name = deviceName.Text.Trim();
+                        connection.Update(_device);
+                    }
+                }
+                else
+                {
+                    await DisplayAlert(
+                        "Operation Failed!",
+                        result.Message,
+                        "Got It");
+                }
             }
         }
 
