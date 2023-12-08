@@ -28,65 +28,59 @@ namespace LetThereBeLightApp
 
         private async void DiscoveryButton_Clicked(object sender, EventArgs e)
         {
-            var result = await SmartBulbClient.DiscoverDevices();
-
-            var smartBulbsFromResult = result.Select(
-                r => new SmartBulb
-                {
-                    Id = r.deviceProperties.id,
-                    Brightness = r.deviceProperties.brightness,
-                    ColorMode = r.deviceProperties.colorMode,
-                    ColorTemperature = r.deviceProperties.colorTemperature,
-                    Hue = r.deviceProperties.hue,
-                    Saturation = r.deviceProperties.saturation,
-                    Location = r.deviceProperties.location,
-                    Power = r.deviceProperties.power == 0 ? "On" : "Off",
-                    Name = r.deviceProperties.name,
-                    RGB = r.deviceProperties.rgb,
-                }
-            );
-
-            var test = new SmartBulb
+            ai.IsRunning = true;
+            try
             {
-                Id = 11,
-                Brightness = 11,
-                ColorMode = 11,
-                ColorTemperature = 11,
-                Hue = 11,
-                Saturation = 11,
-                Location = "",
-                Power = "Off",
-                Name = "Bennys lamp",
-                RGB = 1,
-            };
+                var result = await SmartBulbClient.DiscoverDevices();
+                ai.IsRunning = false;
 
-            var smartBulbsFromResult2 = smartBulbsFromResult.ToList();
-            smartBulbsFromResult2.Add( test );
-
-            using (SQLiteConnection connection = new SQLiteConnection(App.DatabaseConnectionString))
-            {
-                connection.CreateTable<SmartBulb>();
-
-                foreach (var smartBulb in smartBulbsFromResult2)
-                {
-                    // Insert only if the device is new!
-                    if (!connection.Table<SmartBulb>().ToList().Any(s => s.Id == smartBulb.Id))
+                var smartBulbsFromResult = result.Select(
+                    r => new SmartBulb
                     {
-                        int rows = connection.Insert(smartBulb);
+                        Id = r.deviceProperties.id,
+                        Brightness = r.deviceProperties.brightness,
+                        ColorMode = r.deviceProperties.colorMode,
+                        ColorTemperature = r.deviceProperties.colorTemperature,
+                        Hue = r.deviceProperties.hue,
+                        Saturation = r.deviceProperties.saturation,
+                        Location = r.deviceProperties.location,
+                        Power = r.deviceProperties.power == 0 ? "On" : "Off",
+                        Name = r.deviceProperties.name,
+                        RGB = r.deviceProperties.rgb,
+                    }
+                );
 
-                        if (rows > 0)
+                using (SQLiteConnection connection = new SQLiteConnection(App.DatabaseConnectionString))
+                {
+                    connection.CreateTable<SmartBulb>();
+
+                    foreach (var smartBulb in smartBulbsFromResult)
+                    {
+                        // Insert only if the device is new!
+                        if (!connection.Table<SmartBulb>().ToList().Any(s => s.Id == smartBulb.Id))
                         {
-                            await DisplayAlert("Found new smart devices", "Added the new devices to the APP", "Got It");
-                        }
-                        else
-                        {
-                            await DisplayAlert("Note", "No new devices were found!", "Got It");
+                            int rows = connection.Insert(smartBulb);
+
+                            if (rows > 0)
+                            {
+                                await DisplayAlert("Found new smart devices", "Added the new devices to the APP", "Got It");
+                            }
+                            else
+                            {
+                                await DisplayAlert("Note", "No new devices were found!", "Got It");
+                            }
                         }
                     }
-                }
 
-                devicesListView.ItemsSource = connection.Table<SmartBulb>().ToList();
+                    devicesListView.ItemsSource = connection.Table<SmartBulb>().ToList();
+                }
             }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.Message, "Got It");
+                ai.IsRunning = false;
+            }
+            
         }
 
         private void Device_Selected(object sender, EventArgs e)

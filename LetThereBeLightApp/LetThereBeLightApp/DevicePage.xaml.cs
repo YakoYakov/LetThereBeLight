@@ -34,8 +34,10 @@ namespace LetThereBeLightApp
 
         private async void SwitchOnOff(object sender, EventArgs e)
         {
+            TurnOnLoader();
             var payload = new { SmartBulbId = _device.Id };
             var result = await SmartBulbClient.SendCommandAsync(TOGGLE_ENDPOINT, payload);
+            TurnOffLoader();
 
             if (result.Success)
             {
@@ -57,8 +59,10 @@ namespace LetThereBeLightApp
 
         private async void BrightnessSlider_DragCompleted(object sender, EventArgs e)
         {
+            TurnOnLoader();
             var payload = new { SmartBulbId = _device.Id, Brightness = (int)Math.Round(brightnessSlider.Value) };
             var result = await SmartBulbClient.SendCommandAsync(CHANGE_BRIGHTNESS_ENDPOINT, payload);
+            TurnOffLoader();
 
             if (result.Success)
             {
@@ -80,8 +84,10 @@ namespace LetThereBeLightApp
 
         private async void WarmSlider_DragCompleted(object sender, EventArgs e)
         {
+            TurnOnLoader();
             var payload = new { SmartBulbId = _device.Id, ColorTemperature = (int)Math.Round(warmSlider.Value) };
             var result = await SmartBulbClient.SendCommandAsync(CHANGE_COLOR_TEMPERATURE_ENDPOINT, payload);
+            TurnOffLoader();
 
             if (result.Success)
             {
@@ -103,9 +109,11 @@ namespace LetThereBeLightApp
 
         private async void UpdateColor(object sender, EventArgs e)
         {
+            TurnOnLoader();
             var selectedColor = ColorWheel1.SelectedColor.ToSKColor();
             var payload = new { SmartBulbId = _device.Id, R = selectedColor.Red, G = selectedColor.Green, B = selectedColor.Blue };
             var result = await SmartBulbClient.SendCommandAsync(CHANGE_RGB_ENDPOINT, payload);
+            TurnOffLoader();
 
             if (!result.Success)
             {
@@ -121,8 +129,10 @@ namespace LetThereBeLightApp
         {
             if (deviceName.Text != null)
             {
+                TurnOnLoader();
                 var payload = new { SmartBulbId = _device.Id, Name = deviceName.Text.Trim() };
                 var result = await SmartBulbClient.SendCommandAsync(CHANGE_NAME_ENDPOINT, payload);
+                TurnOffLoader();
 
                 if (result.Success)
                 {
@@ -163,6 +173,20 @@ namespace LetThereBeLightApp
             colorTemperatureToolTip.Text = Math.Round(warmSlider.Value).ToString();
             await colorTemperatureToolTip.TranslateTo(
                 (warmSlider.Value - 2700) * ((warmSlider.Width - 40) / 3800), 0, 100);
+        }
+
+        private void TurnOnLoader() 
+        {
+            ai.IsRunning = true;
+            loader.IsVisible = true;
+            loaderImage.IsVisible = true;
+        }
+
+        private void TurnOffLoader() 
+        {
+            ai.IsRunning = false;
+            loader.IsVisible = false;
+            loaderImage.IsVisible = false;
         }
     }
 }

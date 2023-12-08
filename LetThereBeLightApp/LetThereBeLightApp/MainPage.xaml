@@ -15,6 +15,12 @@
         <Button Text="Discover Devices"
                 Clicked="DiscoveryButton_Clicked"/>
 
+        <ActivityIndicator x:Name="ai"
+                           IsRunning="False" 
+                           Color="CadetBlue" 
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="CenterAndExpand"></ActivityIndicator>
+        
         <ListView x:Name="devicesListView"
                   HorizontalOptions="FillAndExpand"
                   ItemSelected="Device_Selected"

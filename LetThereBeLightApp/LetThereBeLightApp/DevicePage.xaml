@@ -3,34 +3,35 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
              x:Class="LetThereBeLightApp.DevicesPage"
              BackgroundColor="Black">
-    <StackLayout>
-
-        <Label Text="{Binding Name}"
+    <AbsoluteLayout>
+        <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1"
+                     AbsoluteLayout.LayoutFlags="All">
+            <Label Text="{Binding Name}"
                IsVisible="{Binding ShowNameLabel}"
                VerticalOptions="CenterAndExpand" 
                HorizontalOptions="CenterAndExpand"
                FontSize="Large"
                Margin="0, 0, 0, -25"/>
 
-        <Button Text="Switch Lamp On/Off"
+            <Button Text="Switch Lamp On/Off"
                 Clicked="SwitchOnOff"
                 Margin="100, 0, 100, -5"/>
 
-        <Label Text="Change Device Brightness"
+            <Label Text="Change Device Brightness"
                Margin="15, 0, 0, -75"/>
-        <Label x:Name="brightnessToolTip" 
+            <Label x:Name="brightnessToolTip" 
                Text="1" HorizontalOptions="Start" 
                FontSize="Micro" 
                HorizontalTextAlignment="Center" 
                VerticalOptions="EndAndExpand"
                BackgroundColor="{StaticResource dark-grey}">
-            <Label.Margin>
-                <OnPlatform x:TypeArguments="Thickness">
-                    <On Platform="Android" Value="10,0"/>
-                </OnPlatform>
-            </Label.Margin>
-        </Label>
-        <Slider DragCompleted="BrightnessSlider_DragCompleted"
+                <Label.Margin>
+                    <OnPlatform x:TypeArguments="Thickness">
+                        <On Platform="Android" Value="10,0"/>
+                    </OnPlatform>
+                </Label.Margin>
+            </Label>
+            <Slider DragCompleted="BrightnessSlider_DragCompleted"
                 ValueChanged="brightnessSlider_ValueChanged"
                 x:Name="brightnessSlider" 
                 Maximum="100" Minimum="1" 
@@ -39,9 +40,9 @@
                 MaximumTrackColor="OrangeRed"
                 />
 
-        <Label Text="Change Color Temperature"
+            <Label Text="Change Color Temperature"
                Margin="15, 0, 0, -75"/>
-        <Label x:Name="colorTemperatureToolTip" 
+            <Label x:Name="colorTemperatureToolTip" 
                Text="2700" 
                HorizontalOptions="Start"
                FontSize="Micro" 
@@ -49,13 +50,13 @@
                VerticalOptions="EndAndExpand"
                BackgroundColor="{StaticResource dark-grey}"
                >
-            <Label.Margin>
-                <OnPlatform x:TypeArguments="Thickness">
-                    <On Platform="Android" Value="10,0"/>
-                </OnPlatform>
-            </Label.Margin>
-        </Label>
-        <Slider DragCompleted="WarmSlider_DragCompleted"
+                <Label.Margin>
+                    <OnPlatform x:TypeArguments="Thickness">
+                        <On Platform="Android" Value="10,0"/>
+                    </OnPlatform>
+                </Label.Margin>
+            </Label>
+            <Slider DragCompleted="WarmSlider_DragCompleted"
                 ValueChanged="warmSlider_ValueChanged"
                 x:Name="warmSlider" 
                 Maximum="6500" 
@@ -64,9 +65,9 @@
                 MinimumTrackColor="Orange"
                 MaximumTrackColor="OrangeRed"/>
 
-        <Label Text="Change Device Color"
+            <Label Text="Change Device Color"
                Margin="15, 0, 0, -10 "/>
-        <colorpicker:ColorWheel x:Name="ColorWheel1"
+            <colorpicker:ColorWheel x:Name="ColorWheel1"
                                 ShowAlphaSlider="false"
                                 ShowLuminositySlider="false"
                                 ShowLuminosityWheel="true"
@@ -74,25 +75,48 @@
                                 Grid.Row="1"
                                 WidthRequest="200"
                                 />
-        <Button Text="Update Color"
+            <Button Text="Update Color"
                 Clicked="UpdateColor"
                 Margin="25, 0, 25, 0"/>
-        
-        
-        <Label Text="Change Device Name" Margin="24, 20, 0, -40"></Label>
-        <Frame BackgroundColor="{StaticResource dark-grey}"
+
+
+            <Label Text="Change Device Name" Margin="24, 20, 0, -40"></Label>
+            <Frame BackgroundColor="{StaticResource dark-grey}"
                CornerRadius="15"
                Margin="25, 0, 25, -20"
                VerticalOptions="CenterAndExpand">
-            
-        <Entry x:Name="deviceName"
-               Placeholder="Name"
-               TextColor="WhiteSmoke"
-               PlaceholderColor="WhiteSmoke"
-               />
-        </Frame>
-        <Button Text="Update Name"
+
+                <Entry x:Name="deviceName"
+                       Placeholder="Name"
+                       TextColor="WhiteSmoke"
+                       PlaceholderColor="BlanchedAlmond"/>
+            </Frame>
+            <Button Text="Update Name"
                 Clicked="UpdateName"
                 Margin="25, 0, 25, 0"/>
-    </StackLayout>
+        </StackLayout>
+        <StackLayout x:Name="loader"
+                     IsVisible="False"
+                     AbsoluteLayout.LayoutBounds="0,0,1,1"
+                     AbsoluteLayout.LayoutFlags="All"
+                     BackgroundColor="Black">
+            <ActivityIndicator x:Name="ai"
+                               IsRunning="False" 
+                               Color="Red" 
+                               HorizontalOptions="CenterAndExpand"
+                               VerticalOptions="CenterAndExpand"
+                               />
+        </StackLayout>
+        <StackLayout x:Name="loaderImage"
+                     IsVisible="False"
+                     AbsoluteLayout.LayoutBounds="0,0,1,1"
+                     AbsoluteLayout.LayoutFlags="All"
+                     BackgroundColor="Black"
+                     Opacity="0.5">
+            <Image Source="https://designmodo.com/wp-content/uploads/2014/11/page-load-1920x1058.jpg" 
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand"/>
+        </StackLayout>
+    </AbsoluteLayout>
+
 </ContentPage>
